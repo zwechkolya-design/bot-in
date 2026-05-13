@@ -4,7 +4,6 @@ keyboards.py — Barlıq inline klaviaturalar (tuymeler) jıynaǵı.
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-
 # ──────────────────────────────────────────────
 # Admin keyboards
 # ──────────────────────────────────────────────
@@ -21,7 +20,6 @@ def admin_main_kb() -> InlineKeyboardMarkup:
     )
     return builder.as_markup()
 
-
 def admin_cancel_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.row(
@@ -29,9 +27,7 @@ def admin_cancel_kb() -> InlineKeyboardMarkup:
     )
     return builder.as_markup()
 
-
 def photos_done_kb() -> InlineKeyboardMarkup:
-    """Súwretler jıynalip atırǵanda kórsetiledi: tawsıw yamasa biykar etiw."""
     builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(text="✅ Tayın", callback_data="photos_done"),
@@ -39,9 +35,7 @@ def photos_done_kb() -> InlineKeyboardMarkup:
     )
     return builder.as_markup()
 
-
 def edit_photos_done_kb() -> InlineKeyboardMarkup:
-    """Ózgertiw processindegi photos_done_kb dıń aynan ózi."""
     builder = InlineKeyboardBuilder()
     builder.row(
         InlineKeyboardButton(text="✅ Tayın", callback_data="edit_photos_done"),
@@ -49,14 +43,13 @@ def edit_photos_done_kb() -> InlineKeyboardMarkup:
     )
     return builder.as_markup()
 
-
 def admin_list_kb(places: list[dict]) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for place in places:
         builder.row(
             InlineKeyboardButton(
-                text=f"🗑 {place['name']} (Óshiriw)",
-                callback_data=f"admin_delete_{place['id']}",
+                text=f"🏙 {place['name']}",
+                callback_data=f"admin_view_{place['id']}",
             )
         )
     builder.row(
@@ -64,6 +57,12 @@ def admin_list_kb(places: list[dict]) -> InlineKeyboardMarkup:
     )
     return builder.as_markup()
 
+def admin_back_to_list_kb() -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="🔙 Dizimge qaytıw", callback_data="admin_list")
+    )
+    return builder.as_markup()
 
 def admin_repeat_kb() -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
@@ -72,7 +71,6 @@ def admin_repeat_kb() -> InlineKeyboardMarkup:
         InlineKeyboardButton(text="🔙 Arqaǵa", callback_data="admin_back_main"),
     )
     return builder.as_markup()
-
 
 def admin_edit_list_kb(places: list[dict]) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
@@ -87,7 +85,6 @@ def admin_edit_list_kb(places: list[dict]) -> InlineKeyboardMarkup:
         InlineKeyboardButton(text="🔙 Arqaǵa", callback_data="admin_back_main")
     )
     return builder.as_markup()
-
 
 def admin_edit_fields_kb(place_id: int) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
@@ -105,17 +102,27 @@ def admin_edit_fields_kb(place_id: int) -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
+# ÓSHIRIW DIZIMI USHIN TUYME
 def admin_delete_list_kb(places: list[dict]) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for place in places:
         builder.row(
             InlineKeyboardButton(
                 text=f"🗑 {place['name']}",
-                callback_data=f"admin_delete_{place['id']}",
+                callback_data=f"del_req_{place['id']}",
             )
         )
     builder.row(
         InlineKeyboardButton(text="🔙 Arqaǵa", callback_data="admin_back_main")
+    )
+    return builder.as_markup()
+
+# ÓSHIRIWDI TASTIYQLAW (SORAW) USHIN TUYME
+def admin_confirm_delete_kb(place_id: int) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text="✅ awa, óshiriw", callback_data=f"del_confirm_{place_id}"),
+        InlineKeyboardButton(text="❌ Biykar etiw", callback_data="admin_delete_list"),
     )
     return builder.as_markup()
 
